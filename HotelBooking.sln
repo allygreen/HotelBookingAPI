@@ -1,17 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBooking.Api", "HotelBooking.Api\HotelBooking.Api.csproj", "{25DFADEC-5F07-4E4E-9E4C-EF9D3619B567}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBooking.Api", "Src\HotelBooking.Api\HotelBooking.Api.csproj", "{25DFADEC-5F07-4E4E-9E4C-EF9D3619B567}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{70EAC1F0-4AD8-4A93-8807-29CEF58CF80C}"
 	ProjectSection(SolutionItems) = preProject
 		compose.yaml = compose.yaml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBooking.Core", "HotelBooking.Core\HotelBooking.Core.csproj", "{88D5CB9F-0B47-439A-8B23-A78D7FF4101D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBooking.Core", "Src\HotelBooking.Core\HotelBooking.Core.csproj", "{88D5CB9F-0B47-439A-8B23-A78D7FF4101D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBooking.Application", "HotelBooking.Application\HotelBooking.Application.csproj", "{9EE9F45D-4E08-48E7-85C1-6100A6DF0073}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBooking.Application", "Src\HotelBooking.Application\HotelBooking.Application.csproj", "{9EE9F45D-4E08-48E7-85C1-6100A6DF0073}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBooking.Infrastructure", "HotelBooking.Infrastructure\HotelBooking.Infrastructure.csproj", "{82DC4295-EF46-41C7-8CE1-B5D017CB7E21}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBooking.Infrastructure", "Src\HotelBooking.Infrastructure\HotelBooking.Infrastructure.csproj", "{82DC4295-EF46-41C7-8CE1-B5D017CB7E21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBooking.Tests", "Src\HotelBooking.Tests\HotelBooking.Tests.csproj", "{0ED8242B-8F1B-481B-8940-91B6BA5D01E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,5 +37,9 @@ Global
 		{82DC4295-EF46-41C7-8CE1-B5D017CB7E21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82DC4295-EF46-41C7-8CE1-B5D017CB7E21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82DC4295-EF46-41C7-8CE1-B5D017CB7E21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0ED8242B-8F1B-481B-8940-91B6BA5D01E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0ED8242B-8F1B-481B-8940-91B6BA5D01E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0ED8242B-8F1B-481B-8940-91B6BA5D01E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0ED8242B-8F1B-481B-8940-91B6BA5D01E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
