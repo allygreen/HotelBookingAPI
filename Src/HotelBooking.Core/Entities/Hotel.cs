@@ -9,5 +9,5 @@ public class Hotel
     [Required]
     public string Name { get; set; }
     public string City { get; set; }  
-    public List<Room> Rooms { get; set; } = new List<Room>();
+    public List<Room> Rooms { get; set; } = new ();
 }

@@ -13,7 +13,7 @@ public class RoomRepository : IRoomRepository
     {
         _context = context;
     }
-    public async Task<Room> GetByIdAsync(int id)
+    public async Task<Room?> GetByIdAsync(int id)
     {
         return await _context.Rooms.FindAsync(id);
     }

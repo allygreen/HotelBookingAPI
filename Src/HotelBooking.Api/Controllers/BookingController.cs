@@ -25,24 +25,8 @@ public class BookingController : ControllerBase
     [Route("")]
     public async Task<IActionResult> NewBooking(CreateBookingRequest createBookingRequest)
     {
-        var response = _bookingService.BookRoom(createBookingRequest);
+        var response = await _bookingService.BookRoom(createBookingRequest);
         return Ok(response);
-    }
-    
-    [Route("hotelsearch/{hotelName}")]
-    [HttpGet]
-    public async Task<IActionResult> SearchHotelsByName(string hotelName)
-    {
-        var hotel = await _hotelService.SearchHotels(hotelName);
-        return Ok(hotel);
-    }
-    
-    [HttpPost]
-    [Route("hotels")]
-    public async Task<IActionResult> AddHotel(CreateHotelRequest createHotelRequest)
-    {
-        await _hotelService.AddAsync(createHotelRequest);
-        return Ok();
     }
     
     [Route("details/{bookingReference}")]
@@ -53,11 +37,14 @@ public class BookingController : ControllerBase
         return Ok(booking);
     }
     
-    [Route("availability/{startDate}/{endDate}/{guestsCount}")]
     [HttpGet]
-    public async Task<IActionResult> GetAvailableRoomsForDateRange(DateTime start, DateTime end, int guestsCount)
+    [Route("availability")]
+    public async Task<IActionResult> GetAvailableRooms(
+        [FromQuery] DateTime startDate, 
+        [FromQuery] DateTime endDate, 
+        [FromQuery] int guestsCount)
     {
-        var availableRooms = _bookingService.GetAvailableRooms(start, end, guestsCount);
+        var availableRooms = await _bookingService.GetAvailableRooms(startDate, endDate, guestsCount);
         return Ok(availableRooms);
     }
 }

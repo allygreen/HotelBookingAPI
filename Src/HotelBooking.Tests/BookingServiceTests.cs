@@ -2,6 +2,7 @@ using AutoMapper;
 using HotelBooking.Application.Services.Implementation;
 using HotelBooking.Application.Services.Interfaces;
 using HotelBooking.Core.DTOs.Requests;
+using HotelBooking.Core.DTOs.Responses;
 using HotelBooking.Core.Entities;
 using HotelBooking.Infrastructure.Repositories.Interfaces;
 using Microsoft.Extensions.Logging;
@@ -40,7 +41,7 @@ public class BookingServiceTests
         var request = new CreateBookingRequest
         {
             RoomId = 1,
-            CustomerName = "John Doe",
+            CustomerName = "Frodo",
             CheckIn = DateTime.Now.AddDays(1),
             CheckOut = DateTime.Now.AddDays(3),
             NumberOfGuests = 2
@@ -79,7 +80,7 @@ public class BookingServiceTests
         var request = new CreateBookingRequest
         {
             RoomId = 999,
-            CustomerName = "John Doe",
+            CustomerName = "Frodo",
             CheckIn = DateTime.Now.AddDays(1),
             CheckOut = DateTime.Now.AddDays(3),
             NumberOfGuests = 2
@@ -103,7 +104,7 @@ public class BookingServiceTests
         var request = new CreateBookingRequest
         {
             RoomId = 1,
-            CustomerName = "John Doe",
+            CustomerName = "Frodo",
             CheckIn = DateTime.Now.AddDays(1),
             CheckOut = DateTime.Now.AddDays(3),
             NumberOfGuests = 2
@@ -132,7 +133,7 @@ public class BookingServiceTests
         var request = new CreateBookingRequest
         {
             RoomId = 1,
-            CustomerName = "John Doe",
+            CustomerName = "Frodo",
             CheckIn = DateTime.Now.AddDays(1),
             CheckOut = DateTime.Now.AddDays(3),
             NumberOfGuests = 6 // More than room capacity

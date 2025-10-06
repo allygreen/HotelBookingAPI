@@ -5,11 +5,11 @@ namespace HotelBooking.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class TestDataController : ControllerBase
+public class SeedDataController : ControllerBase
 {
     private readonly ISeedService _seedService;
     
-    public TestDataController(ISeedService seedService)
+    public SeedDataController(ISeedService seedService)
     {
         _seedService = seedService;
     }

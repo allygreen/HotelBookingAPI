@@ -26,13 +26,14 @@ public class BookingService : IBookingService
     }
     public async Task<BookingResponse> BookRoom(CreateBookingRequest createBookingRequest)
     {
-        var roomExists = await _roomRepository.GetByIdAsync(createBookingRequest.RoomId);
-        if (roomExists == null)
+        var room = await _roomRepository.GetByIdAsync(createBookingRequest.RoomId);
+        if (room == null)
         {
             _logger.LogInformation("Room does not exist");
             return new BookingResponse()
             {
-                Success = false
+                Success = false,
+                Message = "Room not found" 
             };       
         }
         
@@ -46,7 +47,8 @@ public class BookingService : IBookingService
             _logger.LogInformation("Room is not available");
             return new BookingResponse()
             {
-                Success = false
+                Success = false,
+                Message = "Room is not available on requested dates"           
             };               
         }
         
@@ -63,6 +65,7 @@ public class BookingService : IBookingService
         var bookingEntity = _mapper.Map<Core.Entities.Booking>(createBookingRequest);    
         bookingEntity.BookingReference = GenerateBookingRef();
         var bookRoom = await _bookingRepository.AddAsync(bookingEntity);
+        _logger.LogInformation("Booking created");
 
         var bookingResponse = new BookingResponse()
         {
@@ -75,9 +78,8 @@ public class BookingService : IBookingService
 
     public Task<BookingResponse> GetBookingByReference(string bookingReference)
     {
-        var booking = _bookingRepository.GetByBookingReference(bookingReference);
-
         
+        var booking = _bookingRepository.GetByBookingReference(bookingReference);
         var bookingDetails = _mapper.Map<BookingDetails>(booking.Result);
         var bookingResponse = new BookingResponse()
         {
@@ -89,15 +91,32 @@ public class BookingService : IBookingService
     }
 
 
-    public Task<List<Room>> GetAvailableRooms(DateTime checkIn, DateTime checkOut, int capacity)
+    public async Task<List<AvailableHotelResponse>> GetAvailableRooms(DateTime checkIn, DateTime checkOut, int capacity)
     {
-        var rooms = _roomRepository.GetAvailableRooms(checkIn, checkOut, capacity);
-        var roomsResponse = _mapper.Map<List<Room>>(rooms.Result);
+        var rooms = await _roomRepository.GetAvailableRooms(checkIn, checkOut, capacity);
+        _logger.LogInformation("Finding available rooms");
         
-        return Task.FromResult(roomsResponse);
+        // Group rooms by hotel
+        var hotelsWithRooms = rooms
+            .GroupBy(r => r.Hotel)
+            .Select(hotelGroup => new AvailableHotelResponse
+            {
+                HotelId = hotelGroup.Key.Id,
+                HotelName = hotelGroup.Key.Name,
+                HotelCity = hotelGroup.Key.City,
+                AvailableRooms = hotelGroup.Select(room => new AvailableRoomResponse
+                {
+                    RoomId = room.Id,
+                    Capacity = room.Capacity,
+                    RoomType = room.RoomType
+                }).ToList()
+            })
+            .ToList();
+        
+        return hotelsWithRooms;
     }
     
-    public static string GenerateBookingRef(int length = 6)
+    private static string GenerateBookingRef(int length = 10)
     {
         const string chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; 
         return "HB-" + new string(Enumerable.Range(0, length)

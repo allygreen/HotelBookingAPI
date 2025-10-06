@@ -1,13 +1,14 @@
+using System.ComponentModel.DataAnnotations;
 using HotelBooking.Core.Enums;
 
 namespace HotelBooking.Core.DTOs.Requests;
 
 public class Room
 {
-    public int Id { get; set; }  
+    [Required(ErrorMessage = "Room capacity is required")]
+    [Range(1, 10, ErrorMessage = "Room capacity must be between 1 and 10")]
     public int Capacity { get; set; }  
-    public int HotelId { get; set; }   
+    
+    [Required(ErrorMessage = "Room type is required")]
     public RoomType RoomType { get; set; } 
-    public CreateHotelRequest Hotels { get; set; }  
-    public List<CreateBookingRequest> Bookings { get; set; } = new List<CreateBookingRequest>();
 }

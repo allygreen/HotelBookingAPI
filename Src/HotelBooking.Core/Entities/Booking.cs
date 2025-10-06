@@ -8,6 +8,8 @@ public class Booking
     public int Id { get; set; }
     [Required]
     public int RoomId { get; set; }
+    [Required]
+    public Room Room { get; set; }
     [Required]   
     public string CustomerName { get; set; }
     [Required]

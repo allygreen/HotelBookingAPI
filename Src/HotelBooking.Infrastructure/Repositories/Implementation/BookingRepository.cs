@@ -1,3 +1,4 @@
+using AutoMapper;
 using HotelBooking.Core.Entities;
 using HotelBooking.Infrastructure.Data;
 using HotelBooking.Infrastructure.Repositories.Interfaces;
@@ -17,7 +18,12 @@ public class BookingRepository : IBookingRepository
     {
         _context.Bookings.Add(booking);
         await _context.SaveChangesAsync();
-        return booking;
+        
+        // Load the navigation properties after save
+        return await _context.Bookings
+            .Include(b => b.Room)
+            .ThenInclude(r => r.Hotel)
+            .FirstAsync(b => b.Id == booking.Id);
     }
 
     public async Task<Booking> GetByIdAsync(int id)
@@ -28,13 +34,18 @@ public class BookingRepository : IBookingRepository
     
     public async Task<Booking> GetByBookingReference(string bookingReference)
     {
-        var booking = _context.Bookings.SingleOrDefault(b=> b.BookingReference == bookingReference);
+        var booking = await _context.Bookings
+            .Include(b=> b.Room)
+            .ThenInclude(r=> r.Hotel)
+            .SingleOrDefaultAsync(b => b.BookingReference == bookingReference);
         return booking;
     }
 
     public async Task<List<Booking>> GetByRoomIdAsync(int roomId)
     {
-        var roomBookings =  _context.Bookings.Where(r => r.RoomId == roomId);
+        var roomBookings = 
+            _context.Bookings
+                .Where(r => r.RoomId == roomId);
         return roomBookings.ToList();
     }
     
@@ -42,7 +53,7 @@ public class BookingRepository : IBookingRepository
     {
         var available = await _context.Bookings
             .Where(b => b.RoomId == roomId)
-            .Where(b => b.CheckIn < checkOut && b.CheckOut > checkIn)  // Overlap detection
+            .Where(b => b.CheckIn < checkOut && b.CheckOut > checkIn) 
             .AnyAsync();
             
         return !available; 

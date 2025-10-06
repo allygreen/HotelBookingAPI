@@ -37,8 +37,8 @@ public class SeedService : ISeedService
         // Hotel 1: Grand Plaza Hotel
         var hotel1 = new CreateHotelRequest()
         {
-            Name = "Grand Plaza Hotel",
-            City = "New York",
+            Name = "The Prancing Pony",
+            City = "Bree",
             Rooms = new List<Room>
             {
                 new Room { Capacity = 2, RoomType = RoomType.Double },
@@ -54,8 +54,8 @@ public class SeedService : ISeedService
         // Hotel 2: Ocean View Resort
         var hotel2 = new CreateHotelRequest()
         {
-            Name = "Ocean View Resort",
-            City = "Miami",
+            Name = "The Scotsman",
+            City = "Edinburgh",
             Rooms = new List<Room>
             {
                 new Room { Capacity = 2, RoomType = RoomType.Deluxe },
@@ -71,8 +71,8 @@ public class SeedService : ISeedService
         // Hotel 3: Mountain Lodge
         var hotel3 = new CreateHotelRequest()
         {
-            Name = "Mountain Lodge",
-            City = "Denver",
+            Name = "The Waldorf",
+            City = "Glasgow",
             Rooms = new List<Room>
             {
                 new Room { Capacity = 1, RoomType = RoomType.Single },
@@ -88,8 +88,25 @@ public class SeedService : ISeedService
         // Hotel 4: City Center Inn
         var hotel4 = new CreateHotelRequest()
         {
-            Name = "City Center Inn",
-            City = "Chicago",
+            Name = "The Ritz",
+            City = "London",
+            Rooms = new List<Room>
+            {
+                new Room { Capacity = 2, RoomType = RoomType.Double },
+                new Room { Capacity = 2, RoomType = RoomType.Deluxe },
+                new Room { Capacity = 1, RoomType = RoomType.Single },
+                new Room { Capacity = 2, RoomType = RoomType.Double },
+                new Room { Capacity = 2, RoomType = RoomType.Deluxe },
+                new Room { Capacity = 1, RoomType = RoomType.Single }
+            }
+        };
+        await _hotelService.AddAsync(hotel4);
+        
+        // Hotel 4: City Center Inn
+        var hotel5 = new CreateHotelRequest()
+        {
+            Name = "Highland Resort",
+            City = "Aviemore",
             Rooms = new List<Room>
             {
                 new Room { Capacity = 2, RoomType = RoomType.Double },

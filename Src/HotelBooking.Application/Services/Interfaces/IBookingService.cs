@@ -9,5 +9,5 @@ public interface IBookingService
     
     public Task<BookingResponse> GetBookingByReference(string bookingReference);
     
-    public Task<List<Room>> GetAvailableRooms(DateTime checkIn, DateTime checkOut, int capacity);
+    public Task<List<AvailableHotelResponse>> GetAvailableRooms(DateTime checkIn, DateTime checkOut, int capacity);
 }

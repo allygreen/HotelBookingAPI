@@ -1,7 +1,9 @@
 using AutoMapper;
 using HotelBooking.Application.Services.Interfaces;
 using HotelBooking.Core.DTOs.Requests;
+using HotelBooking.Core.DTOs.Responses;
 using HotelBooking.Infrastructure.Repositories.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace HotelBooking.Application.Services.Implementation;
 
@@ -9,23 +11,51 @@ public class HotelService : IHotelService
 {
     private readonly IHotelRepository _hotelRepository;
     private readonly IMapper _mapper;
-    public HotelService(IHotelRepository hotelRepository, IMapper mapper)
+    private readonly ILogger<HotelService> _logger;
+    public HotelService(IHotelRepository hotelRepository, IMapper mapper, ILogger<HotelService> logger)
     {
         _hotelRepository = hotelRepository;
         _mapper = mapper;
+        _logger = logger;
     }
     
-    public async Task AddAsync(CreateHotelRequest createHotelRequest)
+    public async Task<CreateHotelResponse> AddAsync(CreateHotelRequest createHotelRequest)
     {
+        if (createHotelRequest.Rooms.Count != 6)
+        {
+            return new CreateHotelResponse()
+            {
+                Success = false,
+                Message = $"Hotel must have exactly 6 rooms, but {createHotelRequest.Rooms.Count} rooms provided"
+            };
+        }
+
+        var invalidRooms = createHotelRequest.Rooms.Where(r => r.Capacity <= 0).ToList();
+        if (invalidRooms.Any())
+        {
+            return new CreateHotelResponse()
+            {
+                Success = false,
+                Message = "All rooms must have a valid capacity greater than 0"
+            };
+        }
+
         var mappedHotel = _mapper.Map<Core.Entities.Hotel>(createHotelRequest);
-        await _hotelRepository.AddAsync(mappedHotel);
+        var createdHotel = await _hotelRepository.AddAsync(mappedHotel);
+        _logger.LogInformation("Hotel created");
+        return new CreateHotelResponse()
+        {
+            Success = true,
+            Message = "Hotel created successfully",
+            Name = createdHotel.Name
+        };
     }
     
-    public async Task<List<CreateHotelRequest>> SearchHotels(string hotelName)
+    public async Task<List<SearchHotelResponse>> SearchHotels(string hotelName)
     {
         var hotels = await _hotelRepository.SearchHotelNameAsync(hotelName);
-
-        var returnHotels = _mapper.Map<List<CreateHotelRequest>>(hotels);
+        _logger.LogInformation("Hotel searched");
+        var returnHotels = _mapper.Map<List<SearchHotelResponse>>(hotels);
         return returnHotels;
     }
 }

@@ -4,6 +4,7 @@ using HotelBooking.Core.Mappings;
 using HotelBooking.Infrastructure.Data;
 using HotelBooking.Infrastructure.Repositories.Implementation;
 using HotelBooking.Infrastructure.Repositories.Interfaces;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +21,7 @@ builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<ISeedService, SeedService>();
 
 builder.Services.AddDbContext<HotelBookingDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddEndpointsApiExplorer();
@@ -48,5 +49,16 @@ using (var scope = app.Services.CreateScope())
 
 app.MapGet("/health", () => new { status = "OK", timestamp = DateTime.UtcNow });
 
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
+        var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
+        
+        logger.LogError(exception, "Unhandled exception occurred");
+        
+    });
+});
 
 app.Run();
