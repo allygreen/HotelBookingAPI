@@ -37,12 +37,12 @@ public class BookingRepository : IBookingRepository
     
     public async Task<bool> IsRoomAvailableAsync(int roomId, DateTime checkIn, DateTime checkOut)
     {
-        var available = await _context.Bookings
+        var notAvailable = await _context.Bookings
             .Where(b => b.RoomId == roomId)
             .Where(b => b.CheckIn < checkOut && b.CheckOut > checkIn) 
             .AnyAsync();
             
-        return available; 
+        return !notAvailable; 
         
     }
 }

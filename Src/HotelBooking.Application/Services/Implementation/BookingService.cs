@@ -58,7 +58,8 @@ public class BookingService : IBookingService
             _logger.LogInformation("Too many guests {NumberOfGuests} for the room size {roomCapacity} ", createBookingRequest.NumberOfGuests, roomCapacity);
             return new BookingResponse()
             {
-                Success = false
+                Success = false,
+                Message = "Too many guests for the room size"
             };       ;       
         }
         

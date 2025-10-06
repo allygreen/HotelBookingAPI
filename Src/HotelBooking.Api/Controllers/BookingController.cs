@@ -56,6 +56,16 @@ public class BookingController : ControllerBase
         [FromQuery] DateTime endDate, 
         [FromQuery] int guestsCount)
     {
+        if (startDate >= endDate)
+        {
+            return BadRequest("Start date must be before end date");
+        }
+
+        if (guestsCount <= 0)
+        {
+            return BadRequest("Guests count must be greater than 0");
+        }
+
         var availableRooms = await _bookingService.GetAvailableRoomAsync(startDate, endDate, guestsCount);
         return Ok(availableRooms);
     }
