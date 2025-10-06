@@ -9,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add Application Insights
+builder.Services.AddApplicationInsightsTelemetry();
+
 // Add services to the container.
 builder.Services.AddControllers();
 
@@ -44,7 +47,6 @@ using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<HotelBookingDbContext>();
     context.Database.EnsureCreated();
-    context.Database.Migrate();
 }
 
 app.MapGet("/health", () => new { status = "OK", timestamp = DateTime.UtcNow });
@@ -53,10 +55,20 @@ app.UseExceptionHandler(errorApp =>
 {
     errorApp.Run(async context =>
     {
-        var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
         var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
-        
-        logger.LogError(exception, "Unhandled exception occurred");
+
+        context.Response.StatusCode = exception switch
+        {
+            KeyNotFoundException => StatusCodes.Status404NotFound,
+            InvalidOperationException => StatusCodes.Status400BadRequest,
+            _ => StatusCodes.Status500InternalServerError
+        };
+
+        await context.Response.WriteAsJsonAsync(new
+        {
+            error = exception?.Message,
+            status = context.Response.StatusCode
+        });
         
     });
 });

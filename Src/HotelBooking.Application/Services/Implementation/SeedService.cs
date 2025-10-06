@@ -117,7 +117,7 @@ public class SeedService : ISeedService
                 new Room { Capacity = 1, RoomType = RoomType.Single }
             }
         };
-        await _hotelService.AddAsync(hotel4);
+        await _hotelService.AddAsync(hotel5);
     }
 
     public async Task ResetAllDataAsync()
