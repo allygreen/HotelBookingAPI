@@ -1,42 +1,16 @@
 # HotelBooking
 
+#Intro
+
 This project is a Hotel room booking API, it's designed with a clean architecture, to split the business logic from the data. The API project acts only as input, all validation and business logic is performed by the Application project. The Infrastructure project isolates database access via repositories and EntityFramework contexts. The Core project is responsible for providing DTOs (data transport objects),  database entities and mapping between these objects when data access is required. 
 
 
-The architecture described can be visualised as below. 
+## Table of Contents
 
-              ┌────────────────────────────---─┐
-              │      HotelBooking.API          │
-              │  (Controllers / Endpoints)     │
-              └──────────────┬─────────---─────┘
-                             │
-                             ▼
-              ┌────────────────────────────---─┐
-              │   HotelBooking.Application     │
-              │  (Business Logic / Services)   │
-              └──────────────┬────────────---──┘
-                             │
-                             ▼
-              ┌───────────────────────────---──┐
-              │ HotelBooking.Infrastructure    │
-              │(Repositories / EF DbContext)   │
-              └──────────────┬─────────────---─┘
-                             │
-                             ▼
-              ┌───────────────────────────---──┐
-              │        Database                │
-              │  Hotels / Rooms / Bookings     │
-              └────────────────────────────---─┘
-
-              ┌───────────────────────────---──┐
-              │      HotelBooking.Core         │
-              │ (Entities / DTOs / Mapping)    │
-              └────────────────────────────---─┘
-                     ▲         ▲         ▲
-                     │         │         │
-              ┌──────┴─────────┴─────────┴──────┐
-              │ Referenced by all other layers  │
-              └─────────────────────────────────┘
+• [Features](#features)
+• [Architecture](#architecture)
+• [Deployment](#deployment)
+• [Usage](#usage)
 
 
 ### Deployment
@@ -85,7 +59,7 @@ az webapp deploy \
 
 
 ## Features
-- Find hotels by name
+- Find hotels by name 
 - Search available rooms by date and capacity
 - Book rooms with validation
 - Retrieve booking details
@@ -102,7 +76,43 @@ az webapp deploy \
 - Booking is made to a Room. 
 - EF queries + automapper allow for useful response data
 - Application Insights instance (as detailed in bicep file) for Observability 
-- Azure SQL Database 
+- Azure SQL Database (uses sqllite locally)
+
+
+The architecture described can be visualised as below. 
+
+              ┌────────────────────────────---─┐
+              │      HotelBooking.API          │
+              │  (Controllers / Endpoints)     │
+              └──────────────┬─────────---─────┘
+                             │
+                             ▼
+              ┌────────────────────────────---─┐
+              │   HotelBooking.Application     │
+              │  (Business Logic / Services)   │
+              └──────────────┬────────────---──┘
+                             │
+                             ▼
+              ┌───────────────────────────---──┐
+              │ HotelBooking.Infrastructure    │
+              │(Repositories / EF DbContext)   │
+              └──────────────┬─────────────---─┘
+                             │
+                             ▼
+              ┌───────────────────────────---──┐
+              │        Database                │
+              │  Hotels / Rooms / Bookings     │
+              └────────────────────────────---─┘
+
+              ┌───────────────────────────---──┐
+              │      HotelBooking.Core         │
+              │ (Entities / DTOs / Mapping)    │
+              └────────────────────────────---─┘
+                     ▲         ▲         ▲
+                     │         │         │
+              ┌──────┴─────────┴─────────┴──────┐
+              │ Referenced by all other layers  │
+              └─────────────────────────────────┘
 
 
 ## Usage 
