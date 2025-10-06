@@ -13,7 +13,7 @@ public class Booking
     [Required]   
     public string CustomerName { get; set; }
     [Required]
-    public string NumberOfGuests { get; set; }
+    public int NumberOfGuests { get; set; }
     [Required]  
     public string BookingReference { get; set; }
     public DateTime CheckIn { get; set; }

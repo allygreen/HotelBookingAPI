@@ -24,12 +24,12 @@ public class BookingService : IBookingService
         _logger = logger;
         _mapper = mapper;
     }
-    public async Task<BookingResponse> BookRoom(CreateBookingRequest createBookingRequest)
+    public async Task<BookingResponse> BookRoomAsync(CreateBookingRequest createBookingRequest)
     {
         var room = await _roomRepository.GetByIdAsync(createBookingRequest.RoomId);
         if (room == null)
         {
-            _logger.LogInformation("Room does not exist");
+            _logger.LogWarning("Room {RoomId} does not exist ", createBookingRequest.RoomId);
             return new BookingResponse()
             {
                 Success = false,
@@ -44,7 +44,7 @@ public class BookingService : IBookingService
         
         if (!isAvailable)
         {
-            _logger.LogInformation("Room is not available");
+            _logger.LogInformation("Room {RoomId} is not available", createBookingRequest.RoomId);
             return new BookingResponse()
             {
                 Success = false,
@@ -55,7 +55,7 @@ public class BookingService : IBookingService
         var roomCapacity = await _roomRepository.GetRoomCapacityAsync(createBookingRequest.RoomId);
         if (createBookingRequest.NumberOfGuests > roomCapacity)
         {
-            _logger.LogInformation("Too many guests for the room size");
+            _logger.LogInformation("Too many guests {NumberOfGuests} for the room size {roomCapacity} ", createBookingRequest.NumberOfGuests, roomCapacity);
             return new BookingResponse()
             {
                 Success = false
@@ -76,33 +76,34 @@ public class BookingService : IBookingService
         return bookingResponse;
     }
 
-    public Task<BookingResponse> GetBookingByReference(string bookingReference)
+    public async Task<BookingResponse> GetBookingByReferenceAsync(string bookingReference)
     {
         
-        var booking = _bookingRepository.GetByBookingReference(bookingReference);
+        var booking = await _bookingRepository.GetByBookingReference(bookingReference);
 
-        if (booking.Result is null)
+        if (booking is null)
         {
+            _logger.LogWarning("Booking {BookingReference} not found", bookingReference);
             var response = new BookingResponse()
             {
                 Success = false,
                 Message = "Booking not found"
             };
-            return Task.FromResult(response);       
+            return response;       
         }
         
-        var bookingDetails = _mapper.Map<BookingDetails>(booking.Result);
+        var bookingDetails = _mapper.Map<BookingDetails>(booking);
         var bookingResponse = new BookingResponse()
         {
             Booking = bookingDetails,
             Success = true
         };
         
-        return Task.FromResult(bookingResponse);
+        return bookingResponse;
     }
 
 
-    public async Task<List<AvailableHotelResponse>> GetAvailableRooms(DateTime checkIn, DateTime checkOut, int capacity)
+    public async Task<List<AvailableHotelResponse>> GetAvailableRoomAsync(DateTime checkIn, DateTime checkOut, int capacity)
     {
         var rooms = await _roomRepository.GetAvailableRooms(checkIn, checkOut, capacity);
         _logger.LogInformation("Finding available rooms");

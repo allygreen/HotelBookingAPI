@@ -8,43 +8,55 @@ namespace HotelBooking.Api.Controllers;
 [Route("[controller]")]
 public class BookingController : ControllerBase
 {
-    private readonly ILogger<BookingController> _logger;
-    private readonly IHotelService _hotelService;
     private readonly IBookingService _bookingService;
+    private readonly ILogger<BookingController> _logger;
     public BookingController(
-        ILogger<BookingController> logger, 
-        IHotelService hotelService,
-        IBookingService bookingService)
+        IBookingService bookingService,
+        ILogger<BookingController> logger)
     {
-        _logger = logger;
-        _hotelService = hotelService;
         _bookingService = bookingService;
+        _logger = logger;
     }
     
     [HttpPost]
     [Route("")]
-    public async Task<IActionResult> NewBooking(CreateBookingRequest createBookingRequest)
+    public async Task<IActionResult> NewBookingAsync([FromBody]CreateBookingRequest createBookingRequest)
     {
-        var response = await _bookingService.BookRoom(createBookingRequest);
-        return Ok(response);
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var response = await _bookingService.BookRoomAsync(createBookingRequest);
+        if (response.Success)
+        {
+            return Ok(response);
+        }
+        _logger.LogWarning("Booking failed for Room {RoomId}. Reason: {Reason}", 
+            createBookingRequest.RoomId, response.Message);
+        return Conflict(response);
     }
     
     [Route("details/{bookingReference}")]
     [HttpGet]
-    public async Task<IActionResult> GetBookingDetails(string bookingReference)
+    public async Task<IActionResult> GetBookingDetailsAsync(string bookingReference)
     {
-        var booking = await _bookingService.GetBookingByReference(bookingReference);
-        return Ok(booking);
+        var booking = await _bookingService.GetBookingByReferenceAsync(bookingReference);
+        if (booking.Success)
+        {
+            return Ok(booking);
+        }
+        
+        _logger.LogWarning("No booking found for  {bookingReference}", bookingReference);
+        return NotFound(booking);
     }
     
     [HttpGet]
     [Route("availability")]
-    public async Task<IActionResult> GetAvailableRooms(
+    public async Task<IActionResult> GetAvailableRoomsAsync(
         [FromQuery] DateTime startDate, 
         [FromQuery] DateTime endDate, 
         [FromQuery] int guestsCount)
     {
-        var availableRooms = await _bookingService.GetAvailableRooms(startDate, endDate, guestsCount);
+        var availableRooms = await _bookingService.GetAvailableRoomAsync(startDate, endDate, guestsCount);
         return Ok(availableRooms);
     }
 }

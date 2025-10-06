@@ -1,40 +1,42 @@
 # HotelBooking
 
-This project is a HotelBooking API, it's designed with a clean architecture, to split the business logic from the data. The API project acts only as input, all validation and business logic is performed by the Application project. The Infrastructure project isolates database access via repositories and EntityFramework contexts. The Core project is responsible for providing DTOs (data transport objects),  database entities and mapping between these objects when data access is required. 
+This project is a Hotel room booking API, it's designed with a clean architecture, to split the business logic from the data. The API project acts only as input, all validation and business logic is performed by the Application project. The Infrastructure project isolates database access via repositories and EntityFramework contexts. The Core project is responsible for providing DTOs (data transport objects),  database entities and mapping between these objects when data access is required. 
 
 
 The architecture described can be visualised as below. 
 
-                  ┌────────────────────────────-─┐
-                  │      HotelBooking.API        │
-                  │  (Controllers / Endpoints)   │
-                  └──────────────┬───────────────┘
-                                 │
-                                 ▼
-                  ┌─────────────────────────-────┐
-                  │     HotelBooking.Application │
-                  │   (Business Logic / Services)│
-                  └──────────────┬───────────────┘
-                                 │
-                                 ▼
-                  ┌────────────────────────-─────┐
-                  │  HotelBooking.Infrastructure │
-                  │ (Repositories / EF DbContext)│
-                  └──────────────┬───────────────┘
-                                 │
-                                 ▼
-                  ┌─────────────────────-────────┐
-                  │        Database              │
-                  │   Hotels / Rooms / Bookings  │
-                  └───────────────────────-──────┘
+              ┌────────────────────────────---─┐
+              │      HotelBooking.API          │
+              │  (Controllers / Endpoints)     │
+              └──────────────┬─────────---─────┘
+                             │
+                             ▼
+              ┌────────────────────────────---─┐
+              │   HotelBooking.Application     │
+              │  (Business Logic / Services)   │
+              └──────────────┬────────────---──┘
+                             │
+                             ▼
+              ┌───────────────────────────---──┐
+              │ HotelBooking.Infrastructure    │
+              │(Repositories / EF DbContext)   │
+              └──────────────┬─────────────---─┘
+                             │
+                             ▼
+              ┌───────────────────────────---──┐
+              │        Database                │
+              │  Hotels / Rooms / Bookings     │
+              └────────────────────────────---─┘
 
-                                 ▲
-                                 │
-                  ┌─────────────────────────-────┐
-                  │       HotelBooking.Core      │
-                  │ (Entities / DTOs / Mapping)  │
-                  └─────────────────────────-────┘
-
+              ┌───────────────────────────---──┐
+              │      HotelBooking.Core         │
+              │ (Entities / DTOs / Mapping)    │
+              └────────────────────────────---─┘
+                     ▲         ▲         ▲
+                     │         │         │
+              ┌──────┴─────────┴─────────┴──────┐
+              │ Referenced by all other layers  │
+              └─────────────────────────────────┘
 
 
 ### Deployment
@@ -89,6 +91,7 @@ az webapp deploy \
 - Repository pattern
 - Service layer abstraction
 - Comprehensive unit testing
+- DTOs seperated from database models
 - Hotel, Room, Booking tables. 
 - A Hotel has a room which has a booking. 
 - Booking is made to a Room. 

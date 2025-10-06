@@ -15,14 +15,14 @@ public class SeedDataController : ControllerBase
     }
     
     [HttpDelete]
-    public async Task<IActionResult> DeleteTestData()
+    public async Task<IActionResult> DeleteTestDataAsync()
     {
         await _seedService.DeleteAllDataAsync();
         return Ok("All test data deleted successfully.");
     }
 
     [HttpPost]
-    public async Task<IActionResult> SeedTestData()
+    public async Task<IActionResult> SeedTestDataAsync()
     {
         await _seedService.SeedTestDataAsync();
         return Ok("Test data seeded successfully with 5 hotels and 30 rooms total.");
@@ -30,7 +30,7 @@ public class SeedDataController : ControllerBase
 
     [HttpPost]
     [Route("reset")]
-    public async Task<IActionResult> ResetAllData()
+    public async Task<IActionResult> ResetAllDataAsync()
     {
         await _seedService.ResetAllDataAsync();
         return Ok("Database reset and reseeded successfully.");

@@ -42,7 +42,7 @@ public class BookingRepository : IBookingRepository
             .Where(b => b.CheckIn < checkOut && b.CheckOut > checkIn) 
             .AnyAsync();
             
-        return !available; 
+        return available; 
         
     }
 }

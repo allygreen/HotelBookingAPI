@@ -66,7 +66,7 @@ public class BookingServiceTests
             .ReturnsAsync(bookingEntity);
 
         // Act
-        var result = await _bookingService.BookRoom(request);
+        var result = await _bookingService.BookRoomAsync(request);
 
         // Assert
         Assert.That(result.Success, Is.True);
@@ -90,7 +90,7 @@ public class BookingServiceTests
             .ReturnsAsync((Core.Entities.Room)null);
 
         // Act
-        var result = await _bookingService.BookRoom(request);
+        var result = await _bookingService.BookRoomAsync(request);
 
         // Assert
         Assert.That(result.Success, Is.False);
@@ -119,7 +119,7 @@ public class BookingServiceTests
             .ReturnsAsync(false);
 
         // Act
-        var result = await _bookingService.BookRoom(request);
+        var result = await _bookingService.BookRoomAsync(request);
 
         // Assert
         Assert.That(result.Success, Is.False);
@@ -150,7 +150,7 @@ public class BookingServiceTests
             .ReturnsAsync(4);
 
         // Act
-        var result = await _bookingService.BookRoom(request);
+        var result = await _bookingService.BookRoomAsync(request);
 
         // Assert
         Assert.That(result.Success, Is.False);

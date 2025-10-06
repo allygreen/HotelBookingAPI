@@ -5,9 +5,9 @@ namespace HotelBooking.Application.Services.Interfaces;
 
 public interface IBookingService
 {
-    public Task<BookingResponse> BookRoom(CreateBookingRequest createBookingRequest);
+    public Task<BookingResponse> BookRoomAsync(CreateBookingRequest createBookingRequest);
     
-    public Task<BookingResponse> GetBookingByReference(string bookingReference);
+    public Task<BookingResponse> GetBookingByReferenceAsync(string bookingReference);
     
-    public Task<List<AvailableHotelResponse>> GetAvailableRooms(DateTime checkIn, DateTime checkOut, int capacity);
+    public Task<List<AvailableHotelResponse>> GetAvailableRoomAsync(DateTime checkIn, DateTime checkOut, int capacity);
 }

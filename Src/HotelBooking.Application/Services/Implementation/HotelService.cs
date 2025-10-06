@@ -23,6 +23,7 @@ public class HotelService : IHotelService
     {
         if (createHotelRequest.Rooms.Count != 6)
         {
+            _logger.LogWarning("Hotel must have exactly 6 rooms, but {Count} rooms provided for Hotel {.Name}", createHotelRequest.Rooms.Count, createHotelRequest.Name);
             return new CreateHotelResponse()
             {
                 Success = false,
@@ -33,6 +34,7 @@ public class HotelService : IHotelService
         var invalidRooms = createHotelRequest.Rooms.Where(r => r.Capacity <= 0).ToList();
         if (invalidRooms.Any())
         {
+            _logger.LogWarning("All rooms must have a valid capacity greater than 0, but {Rooms} rooms have invalid capacity", invalidRooms.Count);
             return new CreateHotelResponse()
             {
                 Success = false,

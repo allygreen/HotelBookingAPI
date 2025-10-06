@@ -17,10 +17,12 @@ public class RoomRepository : IRoomRepository
     {
         return await _context.Rooms.FindAsync(id);
     }
-    public Task<int> GetRoomCapacityAsync(int roomId)
+    public async Task<int> GetRoomCapacityAsync(int roomId)
     {
-        var roomCapacity =  _context.Rooms.Find(roomId).Capacity;
-        return Task.FromResult(roomCapacity);
+        var result = await _context.Rooms.FindAsync(roomId);
+        if (result == null) return 0;
+        var roomCapacity = result.Capacity;
+        return roomCapacity;
     }
 
     public async Task<List<Room>> GetAvailableRooms(DateTime checkIn, DateTime checkOut, int capacity)

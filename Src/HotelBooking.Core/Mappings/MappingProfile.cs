@@ -24,10 +24,8 @@ public class MappingProfile : Profile
         CreateMap<DTOs.Requests.Room, Entities.Room>();
 
         // Booking mappings
-        CreateMap<Entities.Booking, DTOs.Requests.CreateBookingRequest>()
-            .ForMember(dest => dest.NumberOfGuests, opt => opt.MapFrom(src => int.Parse(src.NumberOfGuests)));
+        CreateMap<Entities.Booking, DTOs.Requests.CreateBookingRequest>();
         CreateMap<DTOs.Requests.CreateBookingRequest, Entities.Booking>()
-            .ForMember(dest => dest.NumberOfGuests, opt => opt.MapFrom(src => src.NumberOfGuests.ToString()))
             .ForMember(dest => dest.BookingReference, opt => opt.Ignore()) // Will be set by service
             .ForMember(dest => dest.Room, opt => opt.Ignore()); // Will be set by service
 

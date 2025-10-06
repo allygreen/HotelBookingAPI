@@ -23,9 +23,9 @@ public class HotelRepository : IHotelRepository
 
     public async Task<List<Hotel>> SearchHotelNameAsync(string hotelName)
     {
-        var hotels = _context.Hotels
+        var hotels = await _context.Hotels
             .Include(h => h.Rooms)
-            .Where(h => h.Name.ToLower().Contains(hotelName.ToLower()));
-        return await Task.FromResult(hotels.ToList());
+            .Where(h => h.Name.ToLower().Contains(hotelName.ToLower())).ToListAsync();
+        return hotels;
     }
 }
