@@ -1,8 +1,8 @@
 # HotelBooking
 
-#Intro
+## Intro
 
-This project is a Hotel room booking API, it's designed with a clean architecture, to split the business logic from the data. The API project acts only as input, all validation and business logic is performed by the Application project. The Infrastructure project isolates database access via repositories and EntityFramework contexts. The Core project is responsible for providing DTOs (data transport objects),  database entities and mapping between these objects when data access is required. 
+This project is a Hotel room booking API, it's designed with a clean architecture, to split the business logic from the data. The API project acts as input directing all validation and business logic to be performed by the Application project. The Infrastructure project isolates database access via repositories and EntityFramework contexts. The Core project is responsible for providing DTOs (data transport objects),  database entities and mapping between these objects when data access is required. 
 
 
 ## Table of Contents
@@ -69,7 +69,7 @@ az webapp deploy \
 - Clean Architecture (API/Application/Core/Infrastructure)
 - Repository pattern
 - Service layer abstraction
-- Comprehensive unit testing
+- Unit testing
 - DTOs seperated from database models
 - Hotel, Room, Booking tables. 
 - A Hotel has a room which has a booking. 
