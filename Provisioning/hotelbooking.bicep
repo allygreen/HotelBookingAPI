@@ -1,7 +1,5 @@
-@description('The name of the resource group')
-param resourceGroupName string = 'hotelbooking-rg'
 @description('The location for all resources')
-param location string = resourceGroup().location
+param location string = 'UK South'
 @description('The name of the app service')
 param appServiceName string = 'hotelbooking-admg'
 @description('The name of the app service plan')
@@ -23,7 +21,7 @@ param sqlAdminLogin string = 'hotelbookingadmin'
 @secure()
 param sqlAdminPassword string = ''
 
-// Log Analytics Workspace (Free Tier - 5GB/month free)
+// Log Analytics Workspace workspace capped to remain within free tier
 resource appInsightsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
   name: 'hotelbooking-workspace-${uniqueString(resourceGroup().id)}'
   location: location
@@ -36,7 +34,6 @@ resource appInsightsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-
   }
 }
 
-// Azure SQL Server (Free Tier)
 resource sqlServer 'Microsoft.Sql/servers@2023-02-01-preview' = {
   name: sqlServerName
   location: location
@@ -47,7 +44,7 @@ resource sqlServer 'Microsoft.Sql/servers@2023-02-01-preview' = {
   }
 }
 
-// Azure SQL Database (Free Tier - 2GB storage)
+// Azure SQL Database
 resource sqlDatabase 'Microsoft.Sql/servers/databases@2023-02-01-preview' = {
   parent: sqlServer
   name: sqlDatabaseName
@@ -71,7 +68,6 @@ resource sqlFirewallRule 'Microsoft.Sql/servers/firewallRules@2023-02-01-preview
   }
 }
 
-// Application Insights (Free Tier - 5GB/month free)
 resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   name: appInsightsName
   location: location
@@ -107,6 +103,7 @@ resource appService 'Microsoft.Web/sites@2023-01-01' = {
   properties: {
     serverFarmId: appServicePlan.id
     siteConfig: {
+      
       linuxFxVersion: 'DOTNET|9.0' 
       appCommandLine: 'dotnet HotelBooking.Api.dll' 
       appSettings: [
