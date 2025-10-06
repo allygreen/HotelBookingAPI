@@ -25,7 +25,7 @@ public class HotelRepository : IHotelRepository
     {
         var hotels = _context.Hotels
             .Include(h => h.Rooms)
-            .Where(h => h.Name.ToLower() == hotelName.ToLower());
+            .Where(h => h.Name.ToLower().Contains(hotelName.ToLower()));
         return await Task.FromResult(hotels.ToList());
     }
 }

@@ -25,7 +25,7 @@ public class SeedDataController : ControllerBase
     public async Task<IActionResult> SeedTestData()
     {
         await _seedService.SeedTestDataAsync();
-        return Ok("Test data seeded successfully with 4 hotels and 24 rooms total.");
+        return Ok("Test data seeded successfully with 5 hotels and 30 rooms total.");
     }
 
     [HttpPost]
