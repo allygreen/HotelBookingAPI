@@ -49,25 +49,31 @@ It can be deployed via the following command sequences from within the 'Provisio
 ```
 az login 
 
+// create resource group
 az group create --name hotelbooking-rg --location "UK South"
 
+// deploy the resources defined in bicep to the resource group
 az deployment group create \
   --resource-group hotelbooking-rg \
   --template-file hotelbooking.bicep
 
+// the free plan defined in the bicep is a linux machine, so need to set the startup command
 az webapp config set \
   --resource-group hotelbooking-rg \
-  --name hotelbooking-mp3b2sz7ka262 \
+  --name hotelbooking-admg \
   --startup-file "dotnet HotelBooking.Api.dll"
 
+// get our code compiled and ready for deployment
 dotnet publish Src/HotelBooking.Api/HotelBooking.Api.csproj -c Release -o ./publish
 
+// some folder nav + zip
 cd publish 
 
 zip -r ../hotelbooking-deploy.zip .
 
 cd ..
 
+// actually deploy the code
 az webapp deploy \
   --resource-group hotelbooking-rg \
   --name hotelbooking-admg \
@@ -76,7 +82,6 @@ az webapp deploy \
 
 
 ```
-
 
 
 ## Features
