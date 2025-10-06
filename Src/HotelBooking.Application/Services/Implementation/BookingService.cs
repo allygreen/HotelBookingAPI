@@ -80,6 +80,17 @@ public class BookingService : IBookingService
     {
         
         var booking = _bookingRepository.GetByBookingReference(bookingReference);
+
+        if (booking.Result is null)
+        {
+            var response = new BookingResponse()
+            {
+                Success = false,
+                Message = "Booking not found"
+            };
+            return Task.FromResult(response);       
+        }
+        
         var bookingDetails = _mapper.Map<BookingDetails>(booking.Result);
         var bookingResponse = new BookingResponse()
         {

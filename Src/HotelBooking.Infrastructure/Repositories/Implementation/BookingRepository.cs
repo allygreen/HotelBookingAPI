@@ -25,28 +25,14 @@ public class BookingRepository : IBookingRepository
             .ThenInclude(r => r.Hotel)
             .FirstAsync(b => b.Id == booking.Id);
     }
-
-    public async Task<Booking> GetByIdAsync(int id)
-    {
-        var booking = await _context.Bookings.FindAsync(id);
-        return booking;
-    }
     
-    public async Task<Booking> GetByBookingReference(string bookingReference)
+    public async Task<Booking?> GetByBookingReference(string bookingReference)
     {
         var booking = await _context.Bookings
             .Include(b=> b.Room)
             .ThenInclude(r=> r.Hotel)
             .SingleOrDefaultAsync(b => b.BookingReference == bookingReference);
         return booking;
-    }
-
-    public async Task<List<Booking>> GetByRoomIdAsync(int roomId)
-    {
-        var roomBookings = 
-            _context.Bookings
-                .Where(r => r.RoomId == roomId);
-        return roomBookings.ToList();
     }
     
     public async Task<bool> IsRoomAvailableAsync(int roomId, DateTime checkIn, DateTime checkOut)
