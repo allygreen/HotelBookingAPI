@@ -64,9 +64,11 @@ cd publish
 
 zip -r ../hotelbooking-deploy.zip .
 
+cd ..
+
 az webapp deploy \
   --resource-group hotelbooking-rg \
-  --name hotelbooking-mp3b2sz7ka262 \
+  --name hotelbooking-admg \
   --src-path ./hotelbooking-deploy.zip \
   --type zip
 
@@ -97,8 +99,10 @@ az webapp deploy \
 
 ## Usage 
 
-Use swagger can be found at 
-/swagger 
+Swagger can be found at 
+[/swagger ](https://hotelbooking-admg.azurewebsites.net/swagger/index.html)
+
+The contents below can all be trialled with on swagger at the site but the below is a run through.
 
 The application can be seeded with 5 test hotels using the SeedData API, it has 3 endpoints. 
 - Delete All
